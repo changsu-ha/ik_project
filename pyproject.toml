@@ -1,0 +1,15 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "ik_project"
+version = "0.1.0"
+description = "Robotics kinematics and rerun visualization examples"
+authors = [{name = "Your Name", email = "you@example.com"}]
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "rerun-sdk[notebook]>=0.24.0",
+]
+
