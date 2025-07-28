@@ -1,0 +1,18 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "ik_project"
+version = "0.1.0"
+description = "URDF-based IK solving with Rerun visualization"
+authors = [{name = "Changsu Ha", email = "changsupersevere@gmail.com"}]
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "rerun-sdk[notebook]>=0.24.0"
+]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
