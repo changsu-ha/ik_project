@@ -10,6 +10,9 @@ authors = [{name = "Changsu Ha", email = "changsupersevere@gmail.com"}]
 readme = "README.md"
 requires-python = ">=3.11"
 dependencies = [
+    "requests>=2.0.0",
+    "urdfpy>=0.0.22",
+    "trimesh>=4.0.0",
     "rerun-sdk[notebook]>=0.24.0"
 ]
 
