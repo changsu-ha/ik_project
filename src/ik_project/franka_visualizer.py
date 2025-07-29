@@ -28,8 +28,11 @@ def download_franka_description(dest: Path, branch: str = "main") -> Path:
     zip_url = (
         f"https://github.com/frankarobotics/franka_description/archive/refs/heads/{branch}.zip"
     )
-    resp = requests.get(zip_url)
-    resp.raise_for_status()
+    try:
+        resp = requests.get(zip_url)
+        resp.raise_for_status()
+    except Exception as exc:
+        raise RuntimeError(f"Failed to download {zip_url}: {exc}") from exc
     with zipfile.ZipFile(io.BytesIO(resp.content)) as zf:
         zf.extractall(dest)
     return dest / f"franka_description-{branch}"
@@ -68,3 +71,18 @@ def visualize_franka(repo_dir: Optional[Path] = None) -> None:
                     ),
                 )
     rr.show()
+
+
+if __name__ == "__main__":
+    import argparse
+
+    parser = argparse.ArgumentParser(
+        description="Visualize the Franka Emika arm URDF using Rerun",
+    )
+    parser.add_argument(
+        "--repo_dir",
+        type=Path,
+        help="Existing franka_description directory to use instead of downloading",
+    )
+    args = parser.parse_args()
+    visualize_franka(args.repo_dir)

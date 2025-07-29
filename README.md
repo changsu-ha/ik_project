@@ -12,12 +12,27 @@ python -m pip install -e .
 
 This will pull in the dependencies specified in `pyproject.toml`.
 
-## Visualizing the Franka Emika arm
-
-To download the official `franka_description` package and visualize the robot in Rerun:
+If you prefer not to install the package, you can run the module directly by
+adding the `src` directory to `PYTHONPATH`:
 
 ```bash
-python -c "from ik_project.franka_visualizer import visualize_franka; visualize_franka()"
+PYTHONPATH=src python -m ik_project.franka_visualizer
 ```
 
-This will download the URDF and mesh files (if not already cached) and open a Rerun viewer showing the Panda robot.
+The first time you run the visualizer it will download the official
+`franka_description` repository.  If internet access is not available, you can
+download the repository manually and pass the path with the `--repo_dir`
+option.
+
+## Visualizing the Franka Emika arm
+
+To visualize the robot with Rerun after installing the dependencies, simply run
+
+```bash
+python -m ik_project.franka_visualizer
+```
+
+The command above downloads the URDF and mesh files (if not already cached) and
+opens a Rerun viewer showing the Panda robot.  Use the `--repo_dir` option to
+point to an existing `franka_description` checkout if you do not have internet
+access during execution.
