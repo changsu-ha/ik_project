@@ -32,7 +32,14 @@ To visualize the robot with Rerun after installing the dependencies, simply run
 python -m ik_project.franka_visualizer
 ```
 
-The command above downloads the URDF and mesh files (if not already cached) and
-opens a Rerun viewer showing the Panda robot.  Use the `--repo_dir` option to
-point to an existing `franka_description` checkout if you do not have internet
-access during execution.
+The command above downloads the URDF and mesh files (if not already cached),
+saves a recording, and attempts to open a browser window pointing at the Rerun
+web viewer. If the viewer does not open automatically you can start it
+manually:
+
+```bash
+rerun --web-viewer /tmp/franka_robot.rrd
+```
+
+Use the `--repo_dir` option to point to an existing `franka_description`
+checkout if you do not have internet access during execution.

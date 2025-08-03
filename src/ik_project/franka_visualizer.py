@@ -4,12 +4,35 @@ from pathlib import Path
 from typing import Optional
 import tempfile
 import subprocess
+import socket
+import shutil
 
 import requests
 from urdfpy import URDF
 import rerun as rr
 import trimesh
 
+
+def get_free_port() -> int:
+    """Return an available port on localhost."""
+    with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+        s.bind(("localhost", 0))
+        return s.getsockname()[1]
+
+
+def launch_web_viewer(recording: Path, port: int | None = None) -> None:
+    """Launch the rerun web viewer if available."""
+    rerun_cmd = shutil.which("rerun")
+    if rerun_cmd is None:
+        print(
+            "\n⚠️  'rerun' command not found. Please install rerun-sdk to launch the web viewer."
+        )
+        return
+
+    if port is None:
+        port = get_free_port()
+    print(f"\n🚀 Opening web viewer at http://localhost:{port} ...")
+    subprocess.Popen([rerun_cmd, "--web-viewer", "--port", str(port), str(recording)])
 
 def download_franka_description(dest: Path, branch: str = "main") -> Path:
     """Download the franka_description repository as a zip file.
@@ -238,14 +261,12 @@ def visualize_franka(repo_dir: Optional[Path] = None, robot_model: str = "fr3") 
     rr.save(rrd_path)
     print(f"✅ Robot visualization saved to: {rrd_path}")
     
-    # For WSL users - provide instructions
-    print("\n🔧 To view in WSL:")
-    print("1. Run: rerun --web-viewer --port 9092")
-    print("2. Open: http://localhost:9092 in your browser")
-    print(f"3. Drag and drop: {rrd_path} into the web viewer")
-    print("\n🚀 Alternative - direct web viewer:")
-    print(f"   Run: rerun --web-viewer {rrd_path}")
-    
+    # Attempt to launch a viewer automatically
+    launch_web_viewer(Path(rrd_path))
+
+    print("\n📢 If no browser window opened, run the following:")
+    print(f"   rerun --web-viewer {rrd_path}")
+
     print("\n✨ Robot model successfully loaded and ready for visualization!")
 
 
